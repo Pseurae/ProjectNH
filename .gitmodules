@@ -1,0 +1,3 @@
+[submodule "ThirdParty/Cauldron"]
+	path = ThirdParty/Cauldron
+	url = https://github.com/Pseurae/Cauldron
