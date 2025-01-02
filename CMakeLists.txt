@@ -8,5 +8,5 @@ add_subdirectory(ThirdParty)
 
 file(COPY Assets DESTINATION ${CMAKE_BINARY_DIR})
 
-add_executable(${PROJECT_NAME} Engine/Game.cpp)
+add_executable(${PROJECT_NAME} Engine/Entry.cpp Engine/Game.cpp)
 target_link_libraries(${PROJECT_NAME} Ethyl Tonic tomlplusplus::tomlplusplus)

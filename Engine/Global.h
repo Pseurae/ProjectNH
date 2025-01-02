@@ -2,7 +2,7 @@
 #include <Tonic/Graphics/Device.h>
 #include <Tonic/Utilities/EventBus.h>
 #include <toml++/toml.hpp>
-#include "State.h"
+#include "Game.h"
 
 struct Global
 {
@@ -11,7 +11,7 @@ struct Global
     Ethyl::Shared<Tonic::Graphics::Device> gfxDevice;
     toml::table configuation;
     bool isRunning = true;
-    State *state;
+    Game *game;
 
     double startTime = 0.0;
     double deltaTime = 0.0;
