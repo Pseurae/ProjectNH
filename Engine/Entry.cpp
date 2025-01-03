@@ -10,7 +10,7 @@ void WindowCloseCallback(void)
     global.isRunning = false;
 }
 
-void WindowKeyCallback(Tonic::Input::Key key, Tonic::Input::Action action, Tonic::Input::KeyMod mods)
+void WindowKeyCallback(Tonic::Key key, Tonic::Action action, Tonic::KeyMod mods)
 {
     global.eventBus.Post<Events::KeyboardInput>(key, action, mods);
 }

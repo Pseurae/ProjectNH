@@ -20,9 +20,9 @@ struct PostRender {};
 
 struct KeyboardInput 
 {
-    ::Tonic::Input::Key key;
-    ::Tonic::Input::Action action;
-    ::Tonic::Input::KeyMod mods;
+    ::Tonic::Key key;
+    ::Tonic::Action action;
+    ::Tonic::KeyMod mods;
 };
 
 struct Quit {};
