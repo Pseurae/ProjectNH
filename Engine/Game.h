@@ -37,5 +37,7 @@ private:
     Controls mControls;
     PlayerState mPlayerState;
     Ethyl::Shared<Tonic::Graphics::SpriteBatch> mSpriteBatch;
+    Ethyl::Shared<Tonic::Graphics::FrameBuffer> mGameFrameBuffer;
+    Ethyl::Shared<Tonic::Graphics::Texture> mGameTexture;
     PlayerRenderer mPlayerRenderer;
 };

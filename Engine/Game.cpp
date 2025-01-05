@@ -2,11 +2,24 @@
 #include "Global.h"
 #include <stb_image.h>
 
+static const Tonic::Graphics::TextureDesc sGameTextureDesc = { 
+    nullptr, 
+    320, 
+    240, 
+    4,
+    Tonic::Graphics::TextureWrapMode::ClampBorder,
+    Tonic::Graphics::TextureFilterType::Nearest,
+    true
+};
+
 void Game::Init()
 {
     mControls.AttachEventHandler();
     mSpriteBatch = Ethyl::CreateShared<Tonic::Graphics::SpriteBatch>(*global.gfxDevice);
     mPlayerRenderer.Init();
+
+    mGameTexture = global.gfxDevice->CreateTexture(sGameTextureDesc);
+    mGameFrameBuffer = global.gfxDevice->CreateFrameBuffer({ mGameTexture });
 }
 
 void Game::Shutdown()
@@ -29,7 +42,11 @@ void Game::Tick()
 
 void Game::Render()
 {
-    mSpriteBatch->BeginScene();
+    mSpriteBatch->BeginScene(mGameFrameBuffer);
     mPlayerRenderer.Render(*mSpriteBatch, mPlayerState);
+    mSpriteBatch->EndScene();
+
+    mSpriteBatch->BeginScene(nullptr);
+    mSpriteBatch->DrawQuad({ 0.0f, 0.0f }, global.window.GetWindowSize(), mGameTexture);
     mSpriteBatch->EndScene();
 }
