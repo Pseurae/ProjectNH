@@ -4,6 +4,9 @@
 #include <Tonic/Graphics/FrameBuffer.h>
 #include "Controls.h"
 #include "PlayerState.h"
+#include <Tonic/Graphics/SpriteBatch.h>
+#include <Tonic/Graphics/Texture.h>
+#include "PlayerRenderer.h"
 
 enum class GameState
 {
@@ -33,4 +36,6 @@ private:
     GameState mState = GameState::Game;
     Controls mControls;
     PlayerState mPlayerState;
+    Ethyl::Shared<Tonic::Graphics::SpriteBatch> mSpriteBatch;
+    PlayerRenderer mPlayerRenderer;
 };

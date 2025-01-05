@@ -15,21 +15,21 @@ static glm::vec2 MoveTowards(const glm::vec2 &current, const glm::vec2 &target, 
 
 void EntityState::Update(void)
 {
-    mCurrentPos = MoveTowards(mCurrentPos, mTargetPos, global.deltaTime * 60);
+    mCurrentPos = MoveTowards(mCurrentPos, mTargetPos, global.deltaTime * 100);
 }
 
-void EntityState::Move(Direction dir)
+void EntityState::Move(Direction dir, bool faceDir)
 {
-    if (mCurrentPos != mTargetPos)
+    if (IsMoving())
         return;
 
     switch (dir)
     {
     case DIRECTION_UP:
-        mTargetPos += glm::vec2{0.0f, 16.0f};
+        mTargetPos += glm::vec2{0.0f, -16.0f};
         break;
     case DIRECTION_DOWN:
-        mTargetPos += glm::vec2{0.0f, -16.0f};
+        mTargetPos += glm::vec2{0.0f, 16.0f};
         break;
     case DIRECTION_LEFT:
         mTargetPos += glm::vec2{-16.0f, 0.0f};
@@ -38,6 +38,32 @@ void EntityState::Move(Direction dir)
         mTargetPos += glm::vec2{16.0f, 0.0f};
         break;
     case DIRECTION_NONE:
+        mLegState = 1;
         return;
+    }
+
+    if (faceDir && dir != DIRECTION_NONE) 
+        mFacingDir = dir;
+    
+    IncrementLegState();
+}
+
+void EntityState::IncrementLegState(void)
+{
+    if (mLegDirection)
+    {
+        if (++mLegState >= 2) 
+        {
+            mLegDirection = !mLegDirection;
+            mLegState = 2;
+        }
+    }
+    else
+    {
+        if (--mLegState <= 0)
+        {
+            mLegDirection = !mLegDirection;
+            mLegState = 0;
+        }
     }
 }

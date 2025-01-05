@@ -12,11 +12,16 @@ void Controls::DetachEventHandler(void)
     global.eventBus.Remove<Events::KeyboardInput, &Controls::EventHandler>(this);
 }
 
-Direction Controls::GetMovementDirection(void)
+Direction Controls::GetMovementDirection(void) const
 {
     if (mDirectionInputs[1] != DIRECTION_NONE)
         return mDirectionInputs[1];
     return mDirectionInputs[0];
+}
+
+void Controls::SwapKeyStates(void)
+{
+    mLastKeys = mCurrentKeys;
 }
 
 static const Tonic::Key sMovementKeys[4] =
@@ -46,7 +51,7 @@ void Controls::HandleDirectionKeys(Events::KeyboardInput &ev)
         {
             if (mDirectionInputs[0] == DIRECTION_NONE)
                 mDirectionInputs[0] = i;
-            else if (mDirectionInputs[1] == DIRECTION_NONE)
+            else if (mDirectionInputs[0] != i && mDirectionInputs[1] == DIRECTION_NONE)
                 mDirectionInputs[1] = i;   
         }
         else
@@ -68,7 +73,13 @@ void Controls::HandleDirectionKeys(Events::KeyboardInput &ev)
     }
 }
 
+void Controls::HandleOtherKeys(Events::KeyboardInput &ev)
+{
+    mCurrentKeys[ev.key] = ev.action == Tonic::Action::Press;
+}
+
 void Controls::EventHandler(Events::KeyboardInput &ev)
 {
     HandleDirectionKeys(ev);
+    HandleOtherKeys(ev);
 }
