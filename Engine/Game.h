@@ -34,6 +34,7 @@ public:
     void Render();
 
     [[nodiscard]] inline auto &GetMap(void) { return mGameMap; }
+    void UpdateCamera(void);
 
 private:
     GameState mState = GameState::Game;

@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Global.h"
 #include <stb_image.h>
+#include <algorithm>
 
 static const Tonic::Graphics::TextureDesc sGameTextureDesc = { 
     nullptr, 
@@ -34,7 +35,7 @@ void Game::Update()
     mPlayerState.Update();
     mPlayerState.UpdateControls(mControls);
 
-    mCameraPos = mPlayerState.GetPosition() - (glm::vec2{ 320, 240 } - glm::vec2{ 16, 32 }) / 2.0f;
+    UpdateCamera();
 
     mControls.SwapKeyStates();
 }
@@ -49,9 +50,6 @@ void Game::Render()
 
     mSpriteBatch->BeginScene();
     mGameMap.Render(*mSpriteBatch, mCameraPos);
-    mSpriteBatch->EndScene();
-
-    mSpriteBatch->BeginScene();
     mPlayerRenderer.Render(*mSpriteBatch, mPlayerState, mCameraPos);
     mSpriteBatch->EndScene();
 
@@ -60,4 +58,20 @@ void Game::Render()
     mSpriteBatch->BeginScene();
     mSpriteBatch->DrawQuad({ 0.0f, 0.0f }, global.window.GetWindowSize(), mGameTexture);
     mSpriteBatch->EndScene();
+}
+
+void Game::UpdateCamera(void)
+{
+    auto newCameraPos = mPlayerState.GetPosition() - (glm::vec2{ 320, 240 } - glm::vec2{ 16, 32 }) / 2.0f;
+    auto mapSize = mGameMap.GetSize();
+
+    if (mapSize.x * 16 > 320) 
+        mCameraPos.x = std::clamp(newCameraPos.x, 0.0f, mapSize.x * 16.0f - 320.0f);
+    else
+        mCameraPos.x = -(320.0f - mapSize.x * 16.0f) / 2.0f;
+
+    if (mapSize.y * 16 > 240) 
+        mCameraPos.y = std::clamp(newCameraPos.y, 0.0f, mapSize.y * 16.0f - 240.0f);
+    else
+        mCameraPos.y = -(240.0f - mapSize.x * 16.0f) / 2.0f;
 }

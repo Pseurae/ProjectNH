@@ -28,6 +28,8 @@ public:
     void Render(Tonic::Graphics::SpriteBatch &sb, const glm::vec2 &cameraPos);
 
     bool IsOutOfBounds(const glm::ivec2 &pos);
+
+    [[nodiscard]] inline glm::ivec2 GetSize() const { return glm::ivec2{ mWidth, mHeight }; }
 private:
     std::string mMapName;
     unsigned char mWidth, mHeight;
