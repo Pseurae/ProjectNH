@@ -14,5 +14,6 @@ add_executable(${PROJECT_NAME}
     Engine/Controls.cpp 
     Engine/EntityState.cpp 
     Engine/PlayerState.cpp
-    Engine/PlayerRenderer.cpp)
+    Engine/PlayerRenderer.cpp
+    Engine/Map.cpp)
 target_link_libraries(${PROJECT_NAME} Ethyl Tonic tomlplusplus::tomlplusplus stb_image)

@@ -20,6 +20,7 @@ void Game::Init()
 
     mGameTexture = global.gfxDevice->CreateTexture(sGameTextureDesc);
     mGameFrameBuffer = global.gfxDevice->CreateFrameBuffer({ mGameTexture });
+    mGameMap.Load("Assets/map_test.toml");
 }
 
 void Game::Shutdown()
@@ -42,11 +43,19 @@ void Game::Tick()
 
 void Game::Render()
 {
-    mSpriteBatch->BeginScene(mGameFrameBuffer);
+    global.gfxDevice->SetRenderTarget(mGameFrameBuffer, true);
+
+    mSpriteBatch->BeginScene();
+    mGameMap.Render(*mSpriteBatch);
+    mSpriteBatch->EndScene();
+
+    mSpriteBatch->BeginScene();
     mPlayerRenderer.Render(*mSpriteBatch, mPlayerState);
     mSpriteBatch->EndScene();
 
-    mSpriteBatch->BeginScene(nullptr);
+    global.gfxDevice->SetRenderTarget(nullptr);
+
+    mSpriteBatch->BeginScene();
     mSpriteBatch->DrawQuad({ 0.0f, 0.0f }, global.window.GetWindowSize(), mGameTexture);
     mSpriteBatch->EndScene();
 }

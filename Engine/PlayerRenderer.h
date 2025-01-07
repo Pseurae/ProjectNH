@@ -14,6 +14,6 @@ public:
     void Render(Tonic::Graphics::SpriteBatch &sb, const PlayerState &pState);
 
 private:
-    glm::vec4 GetCropArea(const PlayerState &pState);
+    static glm::vec4 GetCropArea(const PlayerState &pState);
     Ethyl::Shared<Tonic::Graphics::Texture> mPlayerSpriteSheet;
 };
