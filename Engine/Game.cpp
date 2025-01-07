@@ -34,6 +34,8 @@ void Game::Update()
     mPlayerState.Update();
     mPlayerState.UpdateControls(mControls);
 
+    mCameraPos = mPlayerState.GetPosition() - (glm::vec2{ 320, 240 } - glm::vec2{ 16, 32 }) / 2.0f;
+
     mControls.SwapKeyStates();
 }
 
@@ -46,11 +48,11 @@ void Game::Render()
     global.gfxDevice->SetRenderTarget(mGameFrameBuffer, true);
 
     mSpriteBatch->BeginScene();
-    mGameMap.Render(*mSpriteBatch);
+    mGameMap.Render(*mSpriteBatch, mCameraPos);
     mSpriteBatch->EndScene();
 
     mSpriteBatch->BeginScene();
-    mPlayerRenderer.Render(*mSpriteBatch, mPlayerState);
+    mPlayerRenderer.Render(*mSpriteBatch, mPlayerState, mCameraPos);
     mSpriteBatch->EndScene();
 
     global.gfxDevice->SetRenderTarget(nullptr);

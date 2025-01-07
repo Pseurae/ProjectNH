@@ -18,10 +18,10 @@ void PlayerRenderer::Shutdown()
 {
 }
 
-void PlayerRenderer::Render(Tonic::Graphics::SpriteBatch &sb, const PlayerState &pState)
+void PlayerRenderer::Render(Tonic::Graphics::SpriteBatch &sb, const PlayerState &pState, const glm::vec2 &cameraPos)
 {
-    auto pos = pState.GetPosition();
-    sb.DrawQuad(pos, { 24.0f, 32.0f }, mPlayerSpriteSheet, GetCropArea(pState));
+    auto pos = pState.GetPosition() - cameraPos;
+    sb.DrawQuad(pos - glm::vec2{ 4.0f, 16.0f }, { 24.0f, 32.0f }, mPlayerSpriteSheet, GetCropArea(pState));
 }
 
 glm::vec4 PlayerRenderer::GetCropArea(const PlayerState &pState)

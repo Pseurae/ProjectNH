@@ -33,6 +33,8 @@ public:
     void Tick();
     void Render();
 
+    [[nodiscard]] inline auto &GetMap(void) { return mGameMap; }
+
 private:
     GameState mState = GameState::Game;
     Controls mControls;
@@ -42,4 +44,5 @@ private:
     Ethyl::Shared<Tonic::Graphics::Texture> mGameTexture;
     PlayerRenderer mPlayerRenderer;
     Map mGameMap;
+    glm::vec2 mCameraPos;
 };

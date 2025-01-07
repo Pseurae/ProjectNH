@@ -25,7 +25,9 @@ public:
     ~Map() = default;
 
     void Load(const std::string &headerFileName);
-    void Render(Tonic::Graphics::SpriteBatch &sb);
+    void Render(Tonic::Graphics::SpriteBatch &sb, const glm::vec2 &cameraPos);
+
+    bool IsOutOfBounds(const glm::ivec2 &pos);
 private:
     std::string mMapName;
     unsigned char mWidth, mHeight;

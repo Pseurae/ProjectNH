@@ -55,7 +55,7 @@ void Map::Load(const std::string &headerFileName)
     }
 }
 
-void Map::Render(Tonic::Graphics::SpriteBatch &sb)
+void Map::Render(Tonic::Graphics::SpriteBatch &sb, const glm::vec2 &cameraPos)
 {
     for (auto &layer : mLayers)
     {
@@ -68,7 +68,7 @@ void Map::Render(Tonic::Graphics::SpriteBatch &sb)
             int xtile = i % mTilesets[layer.tilesetId].xtiles;
             int ytile = i / mTilesets[layer.tilesetId].xtiles;
 
-            sb.DrawQuad({ 16.0 * x, 16.0 * y }, { 16.0, 16.0 },
+            sb.DrawQuad(glm::vec2{ 16.0 * x, 16.0 * y } - cameraPos, { 16.0, 16.0 },
                 tilesetTexture,
                 glm::vec4{ 
                     16.0f * xtile,
@@ -79,4 +79,9 @@ void Map::Render(Tonic::Graphics::SpriteBatch &sb)
             );
         }
     }
+}
+
+bool Map::IsOutOfBounds(const glm::ivec2 &pos)
+{
+    return (pos.x < 0 || pos.y < 0 || pos.x >= mWidth || pos.y >= mHeight);
 }

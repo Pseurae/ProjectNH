@@ -15,11 +15,14 @@ public:
     inline bool IsMoving(void) const { return mCurrentPos != mTargetPos; }
     inline int GetLegState(void) const { return mLegState; }
 
+    bool CanMoveTo(const glm::ivec2 &pos);
+
     void IncrementLegState(void);
 
 private:
     glm::vec2 mCurrentPos{0.0f, 0.0f};
     glm::vec2 mTargetPos{0.0f, 0.0f};
+    glm::ivec2 mGridPos{0, 0};
     Direction mFacingDir = DIRECTION_NONE;
 
     bool mLegDirection = false;

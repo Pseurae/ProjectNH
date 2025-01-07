@@ -18,34 +18,55 @@ void EntityState::Update(void)
     mCurrentPos = MoveTowards(mCurrentPos, mTargetPos, global.deltaTime * 100);
 }
 
+static const glm::ivec2 sDirectionVector[] =
+{
+    glm::ivec2{0, -1}, // DIRECTION_UP
+    glm::ivec2{0, 1}, // DIRECTION_DOWN
+    glm::ivec2{-1, 0}, // DIRECTION_LEFT
+    glm::ivec2{1, 0}, // DIRECTION_RIGHT
+    glm::ivec2{1, 0} // DIRECTION_NONE
+};
+
 void EntityState::Move(Direction dir, bool faceDir)
 {
     if (IsMoving())
         return;
 
-    switch (dir)
+    if (CanMoveTo(mGridPos + sDirectionVector[dir]))
     {
-    case DIRECTION_UP:
-        mTargetPos += glm::vec2{0.0f, -16.0f};
-        break;
-    case DIRECTION_DOWN:
-        mTargetPos += glm::vec2{0.0f, 16.0f};
-        break;
-    case DIRECTION_LEFT:
-        mTargetPos += glm::vec2{-16.0f, 0.0f};
-        break;
-    case DIRECTION_RIGHT:
-        mTargetPos += glm::vec2{16.0f, 0.0f};
-        break;
-    case DIRECTION_NONE:
-        mLegState = 1;
-        return;
+        switch (dir)
+        {
+        case DIRECTION_UP:
+            mTargetPos += glm::vec2{0.0f, -16.0f};
+            mGridPos += glm::ivec2{0, -1};
+            break;
+        case DIRECTION_DOWN:
+            mTargetPos += glm::vec2{0.0f, 16.0f};
+            mGridPos += glm::ivec2{0, 1};
+            break;
+        case DIRECTION_LEFT:
+            mTargetPos += glm::vec2{-16.0f, 0.0f};
+            mGridPos += glm::ivec2{-1, 0};
+            break;
+        case DIRECTION_RIGHT:
+            mTargetPos += glm::vec2{16.0f, 0.0f};
+            mGridPos += glm::ivec2{1, 0};
+            break;
+        case DIRECTION_NONE:
+            mLegState = 1;
+            return;
+        }   
     }
 
     if (faceDir && dir != DIRECTION_NONE) 
         mFacingDir = dir;
     
     IncrementLegState();
+}
+
+bool EntityState::CanMoveTo(const glm::ivec2 &pos)
+{
+    return !global.game->GetMap().IsOutOfBounds(pos);
 }
 
 void EntityState::IncrementLegState(void)
