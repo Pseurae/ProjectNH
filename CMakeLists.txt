@@ -15,5 +15,12 @@ add_executable(${PROJECT_NAME}
     Engine/EntityState.cpp 
     Engine/PlayerState.cpp
     Engine/PlayerRenderer.cpp
-    Engine/Map.cpp)
+    Engine/Tileset.cpp
+    Engine/Map.cpp
+
+    Engine/Loaders/Binary.cpp
+    Engine/Loaders/Texture.cpp)
+target_include_directories(${PROJECT_NAME} PUBLIC Engine)
 target_link_libraries(${PROJECT_NAME} Ethyl Tonic tomlplusplus::tomlplusplus stb_image)
+
+add_subdirectory(Tools)

@@ -15,5 +15,5 @@ public:
 
 private:
     static glm::vec4 GetCropArea(const PlayerState &pState);
-    Ethyl::Shared<Tonic::Graphics::Texture> mPlayerSpriteSheet;
+    Ethyl::Shared<Tonic::Graphics::Texture> mPlayerNormalSpriteSheet, mPlayerCombatSpriteSheet;
 };

@@ -52,7 +52,7 @@ void EntityState::Move(Direction dir, bool faceDir)
 
 bool EntityState::CanMoveTo(const glm::ivec2 &pos)
 {
-    return !global.game->GetMap().IsOutOfBounds(pos);
+    return true;
 }
 
 void EntityState::IncrementLegState(void)

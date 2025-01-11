@@ -1,7 +1,8 @@
 #include "Game.h"
 #include "Global.h"
-#include <stb_image.h>
 #include <algorithm>
+#include "Tileset.h"
+#include <Tonic/FileSystem/Provider.h>
 
 static const Tonic::Graphics::TextureDesc sGameTextureDesc = { 
     nullptr, 
@@ -15,13 +16,14 @@ static const Tonic::Graphics::TextureDesc sGameTextureDesc = {
 
 void Game::Init()
 {
+    LoadTilesetDescs("Assets/Tilesets");
+
     mControls.AttachEventHandler();
     mSpriteBatch = Ethyl::CreateShared<Tonic::Graphics::SpriteBatch>(*global.gfxDevice);
     mPlayerRenderer.Init();
 
     mGameTexture = global.gfxDevice->CreateTexture(sGameTextureDesc);
     mGameFrameBuffer = global.gfxDevice->CreateFrameBuffer({ mGameTexture });
-    mGameMap.Load("Assets/map_test.toml");
 }
 
 void Game::Shutdown()
@@ -49,7 +51,6 @@ void Game::Render()
     global.gfxDevice->SetRenderTarget(mGameFrameBuffer, true);
 
     mSpriteBatch->BeginScene();
-    mGameMap.Render(*mSpriteBatch, mCameraPos);
     mPlayerRenderer.Render(*mSpriteBatch, mPlayerState, mCameraPos);
     mSpriteBatch->EndScene();
 
@@ -63,7 +64,7 @@ void Game::Render()
 void Game::UpdateCamera(void)
 {
     auto newCameraPos = mPlayerState.GetPosition() - (glm::vec2{ 320, 240 } - glm::vec2{ 16, 32 }) / 2.0f;
-    auto mapSize = mGameMap.GetSize();
+    auto mapSize = glm::ivec2{16, 16};
 
     if (mapSize.x * 16 > 320) 
         mCameraPos.x = std::clamp(newCameraPos.x, 0.0f, mapSize.x * 16.0f - 320.0f);

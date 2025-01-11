@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
         double tickRemainder = 0.0,
             currentTime = global.startTime,
             lastTime = global.startTime;
-        
+
+        SignalEvents<Events::Init>();
+
         Game game;
         global.game = &game;
         game.Init();
-
-        SignalEvents<Events::Init>();
 
         // Maybe move the function calls to the eventbus in the future?
         while (global.isRunning)
@@ -78,7 +78,8 @@ int main(int argc, char *argv[])
 
         global.gfxDevice.reset();
         global.window.Close();
-    } catch (std::runtime_error &err)
+    } 
+    catch (std::runtime_error &err)
     {
         std::cout << err.what() << std::endl;
     }

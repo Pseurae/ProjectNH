@@ -11,3 +11,4 @@ set(CAULDRON_TESTS_ENABLED OFF)
 add_subdirectory(Cauldron)
 
 add_subdirectory(stb_image)
+add_subdirectory(imgui)

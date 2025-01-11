@@ -7,7 +7,6 @@
 #include <Tonic/Graphics/SpriteBatch.h>
 #include <Tonic/Graphics/Texture.h>
 #include "PlayerRenderer.h"
-#include "Map.h"
 
 enum class GameState
 {
@@ -33,7 +32,6 @@ public:
     void Tick();
     void Render();
 
-    [[nodiscard]] inline auto &GetMap(void) { return mGameMap; }
     void UpdateCamera(void);
 
 private:
@@ -44,6 +42,5 @@ private:
     Ethyl::Shared<Tonic::Graphics::FrameBuffer> mGameFrameBuffer;
     Ethyl::Shared<Tonic::Graphics::Texture> mGameTexture;
     PlayerRenderer mPlayerRenderer;
-    Map mGameMap;
     glm::vec2 mCameraPos;
 };

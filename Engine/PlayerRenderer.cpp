@@ -2,26 +2,24 @@
 #include <stb_image.h>
 #include <Ethyl/Assert.h>
 #include "Global.h"
+#include "Loaders/Texture.h"
+#include <iostream>
 
 void PlayerRenderer::Init()
 {
-    {
-        int w, h, channels;
-        unsigned char *data = stbi_load("Assets/Nobita.png", &w, &h, &channels, 0);
-        ETHYL_ASSERT(data, "Error loading image.");
-        mPlayerSpriteSheet = global.gfxDevice->CreateTexture({ data, w, h, channels });
-        stbi_image_free(data);
-    }
+    mPlayerNormalSpriteSheet = mPlayerCombatSpriteSheet = LoadTexture("Assets/Sprites/Nobita.png");
 }
 
 void PlayerRenderer::Shutdown()
 {
+    mPlayerCombatSpriteSheet.reset();
+    mPlayerNormalSpriteSheet.reset();
 }
 
 void PlayerRenderer::Render(Tonic::Graphics::SpriteBatch &sb, const PlayerState &pState, const glm::vec2 &cameraPos)
 {
     auto pos = pState.GetPosition() - cameraPos;
-    sb.DrawQuad(pos - glm::vec2{ 4.0f, 16.0f }, { 24.0f, 32.0f }, mPlayerSpriteSheet, GetCropArea(pState));
+    sb.DrawQuad(pos - glm::vec2{ 4.0f, 16.0f }, { 24.0f, 32.0f }, pState.IsCombatModeToggled() ? mPlayerCombatSpriteSheet : mPlayerNormalSpriteSheet, GetCropArea(pState));
 }
 
 glm::vec4 PlayerRenderer::GetCropArea(const PlayerState &pState)
