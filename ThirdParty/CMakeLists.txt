@@ -7,6 +7,13 @@ FetchContent_Declare(tomlplusplus
 
 FetchContent_MakeAvailable(tomlplusplus)
 
+FetchContent_Declare(nfd-extended
+    GIT_REPOSITORY "https://github.com/btzy/nativefiledialog-extended"
+    GIT_TAG v1.2.1
+)
+
+FetchContent_MakeAvailable(nfd-extended)
+
 set(CAULDRON_TESTS_ENABLED OFF)
 add_subdirectory(Cauldron)
 

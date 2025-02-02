@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "Global.h"
 #include <algorithm>
-#include "Tileset.h"
 #include <Tonic/FileSystem/Provider.h>
 
 static const Tonic::Graphics::TextureDesc sGameTextureDesc = { 
@@ -16,8 +15,6 @@ static const Tonic::Graphics::TextureDesc sGameTextureDesc = {
 
 void Game::Init()
 {
-    LoadTilesetDescs("Assets/Tilesets");
-
     mControls.AttachEventHandler();
     mSpriteBatch = Ethyl::CreateShared<Tonic::Graphics::SpriteBatch>(*global.gfxDevice);
     mPlayerRenderer.Init();

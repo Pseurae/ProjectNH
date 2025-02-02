@@ -2,12 +2,19 @@
 
 #include <string>
 
+class Application;
 struct GLFWwindow;
+
+struct WindowDesc
+{
+    std::string name;
+    int width, height;
+};
 
 class Window final
 {
 public:
-    Window(const std::string &name, int width, int height);
+    Window(const WindowDesc &desc);
     ~Window();
 
     void InitGLFW();
@@ -16,13 +23,13 @@ public:
     void ShutdownGLFW();
     void ShutdownImGui();
 
-    void FrameStart();
-    void Frame();
-    void FrameEnd();
+    void Loop(Application &app);
 
-    void Run();
+    GLFWwindow *GetNativeWindow() const { return mWindow; }
+
 private:
     GLFWwindow *mWindow;
     std::string mName;
     int mWidth, mHeight;
+    float mDpiScale;
 };
