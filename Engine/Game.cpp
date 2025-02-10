@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Global.h"
+#include "InternalEvents.h"
 #include <algorithm>
 #include <Tonic/FileSystem/Provider.h>
 
@@ -12,6 +13,24 @@ static const Tonic::Graphics::TextureDesc sGameTextureDesc = {
     Tonic::Graphics::TextureFilterType::Nearest,
     true
 };
+
+Game::Game()
+{
+    global.eventBus.Register<Events::Init, &Game::Init>(this);
+    global.eventBus.Register<Events::Shutdown, &Game::Shutdown>(this);
+
+    global.eventBus.Register<Events::Update, &Game::Update>(this);
+    global.eventBus.Register<Events::Render, &Game::Render>(this);
+}
+
+Game::~Game()
+{
+    global.eventBus.Remove<Events::Init, &Game::Init>(this);
+    global.eventBus.Remove<Events::Shutdown, &Game::Shutdown>(this);
+
+    global.eventBus.Remove<Events::Update, &Game::Update>(this);
+    global.eventBus.Remove<Events::Render, &Game::Render>(this);
+}
 
 void Game::Init()
 {

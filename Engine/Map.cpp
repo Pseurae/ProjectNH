@@ -1,5 +1,11 @@
-#include "Common/Map.h"
+#include "Map.h"
 #include <Ethyl/Assert.h>
+
+void MapContent::Clear(void)
+{
+    mEntities.clear();
+    mLayers.clear();
+}
 
 void MapContent::Load(const toml::table &tbl)
 {
@@ -8,7 +14,6 @@ void MapContent::Load(const toml::table &tbl)
 toml::table MapContent::Save(void)
 {
     toml::table mainTbl {
-        { "name", mName },
         { "width", mDimensions.x },
         { "height", mDimensions.y }
     };
@@ -17,7 +22,6 @@ toml::table MapContent::Save(void)
     for (const auto &l : mLayers)
     {
         toml::table layerTbl {
-            { "name", l.name },
             { "z", l.z }
         };
 

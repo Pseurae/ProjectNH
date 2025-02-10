@@ -5,18 +5,8 @@
 
 Global global;
 
-void WindowCloseCallback(void)
-{
-    global.isRunning = false;
-}
-
-void WindowKeyCallback(Tonic::Key key, Tonic::Action action, Tonic::KeyMod mods)
-{
-    global.eventBus.Post<Events::KeyboardInput>(key, action, mods);
-}
-
 template<typename... Events>
-void SignalEvents(auto&& ...args)
+static void SignalEvents(auto&& ...args)
 {
     (global.eventBus.Post<Events>(std::forward<decltype(args)>(args)...), ...);
 }
@@ -38,8 +28,12 @@ int main(int argc, char *argv[])
         global.gfxDevice = Ethyl::CreateShared<Tonic::Graphics::Device>(global.window);
         global.gfxDevice->SetClearColor({ 0.0f, 0.0f, 0.0f, 0.0f });
 
-        global.window.SetCloseCallback(WindowCloseCallback);
-        global.window.SetKeyCallback(WindowKeyCallback);
+        global.window.SetCloseCallback(+[]() {
+            global.isRunning = false;
+        });
+        global.window.SetKeyCallback(+[](Tonic::Key key, Tonic::Action action, Tonic::KeyMod mods) {
+            global.eventBus.Post<Events::KeyboardInput>(key, action, mods);
+        });
 
         global.startTime = Tonic::Time::Get();
         global.tickRate =  1.0 / global.configuation["internal"]["tickrate"].value_or(60);
@@ -47,13 +41,20 @@ int main(int argc, char *argv[])
             currentTime = global.startTime,
             lastTime = global.startTime;
 
+		// IMGUI_CHECKVERSION();
+		// ImGui::CreateContext();
+        // ImGui::StyleColorsDark();
+        // ImGuiIO& io = ImGui::GetIO();
+        // io.IniFilename = nullptr;
+        // io.FontGlobalScale *= global.window.GetContentScale();
+
+        // ImGui_ImplGlfw_InitForOpenGL(global.window.GetNativeHandle(), true);
+		// ImGui_ImplOpenGL3_Init("#version 330");
+
+        // Game game;
+
         SignalEvents<Events::Init>();
 
-        Game game;
-        global.game = &game;
-        game.Init();
-
-        // Maybe move the function calls to the eventbus in the future?
         while (global.isRunning)
         {
             lastTime = currentTime;
@@ -63,18 +64,31 @@ int main(int argc, char *argv[])
             tickRemainder += global.deltaTime;
 
             global.window.PumpEvents();
-            game.Update();
+            SignalEvents<Events::PreUpdate, Events::Update, Events::PostUpdate>();
 
             for (; tickRemainder > global.tickRate; tickRemainder -= global.tickRate)
-                game.Tick();
+                SignalEvents<Events::PreTick, Events::Tick, Events::PostTick>();
+
+            // ImGui_ImplOpenGL3_NewFrame();
+            // ImGui_ImplGlfw_NewFrame();
+            // ImGui::NewFrame();
+
+            // io.DisplaySize = ImVec2(
+            //     global.window.GetWindowSize().x, 
+            //     global.window.GetWindowSize().y);
+            // ImGui::Render();
 
             global.gfxDevice->Clear();
-            game.Render();
+            SignalEvents<Events::PreRender, Events::Render, Events::PostRender>();
+            // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             global.gfxDevice->Present();
         }
 
-        SignalEvents<Events::Quit>();
-        game.Shutdown();
+        SignalEvents<Events::Shutdown>();
+
+		// ImGui_ImplOpenGL3_Shutdown();
+		// ImGui_ImplGlfw_Shutdown();
+		// ImGui::DestroyContext();
 
         global.gfxDevice.reset();
         global.window.Close();

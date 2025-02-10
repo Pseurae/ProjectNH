@@ -14,11 +14,11 @@ enum class GameState
     Game
 };
 
-class Game
+class Game final
 {
 public:
-    Game() = default;
-    ~Game() = default;
+    Game();
+    ~Game();
 
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;

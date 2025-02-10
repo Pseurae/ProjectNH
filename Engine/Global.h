@@ -12,9 +12,7 @@ struct Global
     Ethyl::Shared<Tonic::Graphics::Device> gfxDevice;
     toml::table configuation;
     bool isRunning = true;
-    Game *game;
     Tonic::FileSystem::Drive drive;
-    
 
     double startTime = 0.0;
     double deltaTime = 0.0;

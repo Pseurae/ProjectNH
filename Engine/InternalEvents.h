@@ -25,5 +25,5 @@ struct KeyboardInput
     ::Tonic::KeyMod mods;
 };
 
-struct Quit {};
+struct Shutdown {};
 }
