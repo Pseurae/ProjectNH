@@ -3,7 +3,6 @@
 #include <Tonic/Utilities/EventBus.h>
 #include <Tonic/FileSystem/Drive.h>
 #include <toml++/toml.hpp>
-#include "Game.h"
 
 struct Global
 {
