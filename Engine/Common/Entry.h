@@ -1,7 +1,5 @@
 #include "Global.h"
 #include "InternalEvents.h"
-#include "Game.h"
-#include "Tool.h"
 #include <iostream>
 #include <Tonic/Time.h>
 
@@ -72,17 +70,4 @@ void EngineMain(void)
 
     global.gfxDevice.reset();
     global.window.Close();
-}
-
-int main(int argc, char *argv[])
-{
-    try { 
-#if not defined(NH_EDITOR)
-        EngineMain<Game>();
-#else
-        EngineMain<Tool>();
-#endif
-    } 
-    catch (std::runtime_error &err) { std::cout << err.what() << std::endl; }
-    return 0;
 }
