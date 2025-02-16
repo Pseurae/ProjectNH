@@ -1,4 +1,7 @@
 #include "Panes/Map.h"
+#include <imgui.h>
 
-void Map::Draw()
-{}
+void MapPane::Draw()
+{
+    ImGui::Text("Test");
+}

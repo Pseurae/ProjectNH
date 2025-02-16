@@ -2,9 +2,9 @@
 
 #include "ImGui/Pane.h"
 
-class Map final : public Pane
+class MapPane final : public Pane
 {
 public:
     virtual void Draw() override final;
-    virtual const std::string GetWindowName() override final { return "Tilesets"; }
+    virtual const std::string GetWindowName() override final { return "Maps"; }
 };

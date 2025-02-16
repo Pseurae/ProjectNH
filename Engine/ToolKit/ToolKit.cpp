@@ -1,7 +1,8 @@
 #include "ToolKit.h"
 #include "Panes/Tilesets.h"
-#include "Global.h"
-#include "InternalEvents.h"
+#include "Panes/Map.h"
+#include <Global.h>
+#include <InternalEvents.h>
 
 #define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #include <imgui_impl_opengl3.h>
@@ -18,6 +19,7 @@ ToolKit::ToolKit()
     global.eventBus.Register<Events::PostRender, &ToolKit::PostRender>(this);
 
     mPanes.push_back(Ethyl::CreateUnique<TilesetsPane>());
+    mPanes.push_back(Ethyl::CreateUnique<MapPane>());
 }
 
 ToolKit::~ToolKit()
@@ -38,6 +40,7 @@ void ToolKit::Init()
     ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     io.FontGlobalScale *= global.window.GetContentScale();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui_ImplGlfw_InitForOpenGL(global.window.GetNativeHandle(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
@@ -56,8 +59,6 @@ void ToolKit::PreRender()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
-
-#include <iostream>
 
 void ToolKit::Render()
 {
